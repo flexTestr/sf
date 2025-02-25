@@ -12,12 +12,11 @@ public class AccountPhoneUpdater {
         // Query the Accounts that need their Phone field updated
         List<Account> accountsToUpdate = [SELECT Id, Phone FROM Account WHERE Id IN :accountIds];
 
-        // Update the Phone field for each Account
+        // Update the Phone field for each Account based on the last non-null Contact Phone
         for (Account acct : accountsToUpdate) {
             for (Contact con : contacts) {
                 if (con.AccountId == acct.Id && con.Phone != null) {
-                    acct.Phone = con.Phone;  // Set Account's Phone to Contact's Phone
-                    break;  // Set once for each Account
+                    acct.Phone = con.Phone;  // Set Account's Phone to the last Contact's Phone
                 }
             }
         }
